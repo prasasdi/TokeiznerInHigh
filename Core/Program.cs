@@ -3,11 +3,13 @@ using Core.Helpers.Enums;
 using Core.Models;
 using Core.Models.Nodes;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace Core
@@ -30,7 +32,7 @@ namespace Core
             string bar1 = "<div class=\"ini\">kan <div > dimana</div ></div >\0";
 
             string foo = "<div >kakaa</div>\0";
-            string foo1 = "<div>aaaaaa</div>\0";
+            string foo1 = "<div id=\"div1\">aaaaaa</div><div id=\"div2\">aaaaaa</div>\0";
 
             string pattern = @"<(/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|>([^<]*)<|(\s+)";
 
@@ -38,10 +40,17 @@ namespace Core
             {
                 html += '\0';
             }
-            Scanner scanner = Scanner.InitScanner(bar);
+            Scanner scanner = Scanner.InitScanner(html);
 
             Token token;
+
+            // container dari nodes
+            List<NodeModel> nodes = new List<NodeModel>();
+
+            // pointer ke node N
             NodeModel node = new NodeModel();
+
+            // pointer attr untuk node N
             AttrModel nodeAttr = new AttrModel();
             Console.WriteLine($"Strleng = {scanner.Length}");
             while (true)
@@ -105,6 +114,11 @@ namespace Core
                         {
                             node = node.Parent;
                         }
+                        else
+                        {
+                            nodes.Add(node);
+                            node = new NodeModel();
+                        }
                         break;
                 }
 
@@ -114,13 +128,18 @@ namespace Core
                 }
             }
 
-            scanner.FreeScanner();
-            watch.Stop();
-            Console.WriteLine($"child node count: {node.Childrens.Count}");
-            foreach(var child in node.Childrens)
+            foreach(var _node in nodes)
             {
-                Console.WriteLine($"node child: {child.Tag} , parent node: {child.Parent.Tag}");
+                Console.WriteLine($"child node count: {_node.Childrens.Count}");
+                foreach (var child in _node.Childrens)
+                {
+                    Console.WriteLine($"node child: {child.Tag} , parent node: {child.Parent.Tag}");
+                }
             }
+            scanner.FreeScanner();
+            Console.WriteLine();
+            Console.WriteLine(JsonSerializer.Serialize(nodes));
+            watch.Stop();
             Console.WriteLine();
             Console.WriteLine($"elapsed {watch.ElapsedMilliseconds} ms");
         }

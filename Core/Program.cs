@@ -41,13 +41,13 @@ namespace Core
                 Console.WriteLine($"{token.Type} : {token.Value}");
 
                 switch (token.Type)
-                { 
+                {
                     case TokenTypeEnum.TOKEN_TAG_START:
                         // kalau tag kosong, asumsikan node adalah sebuah akar
                         if (node.Tag == null)
                         {
                             node = new NodeModel()
-                            { 
+                            {
                                 Tag = token.Value,
                             };
 

@@ -23,20 +23,8 @@ namespace Core
             /*
              * Asumsi mereka ada char eof \0 kalau enggak ada tambahin sendiri
              */
-            /// Contoh full string html
-            string html = "<div><span>dengan catatan:<span> ini adalah double span</span></span><br/><ul><li>satu. dua dengan <i>italic <span>ini bisa jadi <b>bold</b></span></i></li><li>tiga dan empat dengan <b>bold</b></li></ul><p><div><span>maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>";
-            string html1 = "<div ><span >dengan catatan:<span > ini adalah double span</span></span><br /><ul ><li >satu. dua dengan <i >italic <span >ini bisa jadi <b >bold</b></span></i></li><li >tiga dan empat dengan <b >bold</b></li></ul><p ><div ><span >maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>\0";
             
-            // Contoh dengan attr
-            string bar = "<div class=\"ini\" id=\"parent\" disabled>kan <div id=\"child\"> dimana</div></div>\0";
-            string bar1 = "<div class=\"ini\">kan <div > dimana</div ></div >\0";
-
-            string foo = "<div >kakaa</div>\0";
-            string foo1 = "<div id=\"div1\">aaaaaa</div><div id=\"div2\">aaaaaa</div>\0";
-
-            string pattern = @"<(/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|>([^<]*)<|(\s+)";
-
-            Scanner scanner = Scanner.InitScanner(html);
+            Scanner scanner = Scanner.InitScanner("<p style=\"text-align: justify\">Pastikan pada mesin granulasi bagian \"<b>Inlet Product dan Pipa / Selang Suction</b><span >\" </span>(Jika Digunakan) : </p><ul><li style=\"text-align: justify\">Tidak terdapat sisa produk sesuai dipersyaratkan dari produk sebelumnya / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul><p style=\"text-align: justify\"><b>Catatan : </b></p><p style=\"text-align: justify\">1. Jika <b>digunakan : </b></p><ul><li style=\"text-align: justify\">pilih <b>Sesuai, Jika hasil memenuhi syarat </b></li><li style=\"text-align: justify\">pilih <b>Tidak Sesuai, jika hasil tidak memenuhi syarat </b></li></ul><p style=\"text-align: justify\">2. Jika <b>tidak digunakan</b>, maka pilih <b>NA</b>. </p>");
 
             Token token;
 
@@ -82,7 +70,13 @@ namespace Core
                         }
                         break;
                     case TokenTypeEnum.TOKEN_TEXT:
-                        node.Text = token.Value;
+                        //node.Text = token.Value;
+                        node.Childrens.Add(new NodeModel()
+                        { 
+                            Tag = "#text",
+                            Text = token.Value,
+                            Parent = node
+                        });
                         break;
                     case TokenTypeEnum.TOKEN_ATTR_NAME:
                         nodeAttr = new AttrModel()

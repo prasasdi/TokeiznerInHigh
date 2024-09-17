@@ -92,7 +92,10 @@ namespace Core.Common
                 else if (c == '>')
                 {
                     t = makeToken(s, TokenTypeEnum.TOKEN_TAG_START);
-
+                    if (SelfClosingTagEnums.Enums.Contains(t.Value))
+                    {
+                        t.Type = TokenTypeEnum.TOKEN_SELF_CLOSING;
+                    }
                     // skip >
                     Advance(s);
                     s.Ctx = CtxEnum.CTX_INITIAL;

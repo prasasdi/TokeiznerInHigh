@@ -14,3 +14,6 @@ Untuk memelajari bagaimana tokenizer dapat dilakukan dalam high-level proglang (
 ### Referensi Debug
 Untuk memastikan fitur yang dikembangkan berjalan dengan baik
 [DOM Tree Online](https://software.hixie.ch/utilities/js/live-dom-viewer/)
+
+### What to do
+Bisa dibuat atau dikembangkan lanjutnya untuk identifikasi dom tree

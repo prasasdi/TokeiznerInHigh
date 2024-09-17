@@ -117,8 +117,9 @@ namespace Core
             }
 
             // print serialized nodes
+            // karena seliazier ini buat proses eksekusi jadi agak lama
             Console.WriteLine();
-            Console.WriteLine(JsonSerializer.Serialize(nodes));
+            //Console.WriteLine(JsonSerializer.Serialize(nodes));
 
             scanner.FreeScanner();
             watch.Stop();

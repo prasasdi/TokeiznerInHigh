@@ -24,7 +24,7 @@ namespace Core
             string foo1 = "<div>aaaaaa</div>\0";
 
             string pattern = @"<(/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|>([^<]*)<|(\s+)";
-            Scanner scanner = Scanner.InitScanner(bar);
+            Scanner scanner = Scanner.InitScanner(html);
 
             Token token;
             Console.WriteLine($"Strleng = {scanner.Length}");
@@ -32,7 +32,7 @@ namespace Core
             {
                 token = ScannerExtension.ScanToken(scanner);
                 // print token dimari
-                Console.WriteLine($"{token.Type} : {token.Value} {token.Length}");
+                Console.WriteLine($"{token.Type} : {token.Value}");
 
                 if (token.Type == TokenTypeEnum.TOKEN_EOF)
                 {

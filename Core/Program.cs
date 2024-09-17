@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Core
 {
@@ -21,7 +22,7 @@ namespace Core
             Stopwatch watch = new Stopwatch();
             watch.Start();
             
-            Scanner scanner = Scanner.InitScanner("<p style=\"text-align: justify\">Pastikan pada <br>mesin granulasi <br/>bagian \"<b>Inlet Product dan Pipa / Selang Suction</b><span >\" </span>(Jika Digunakan) : </p><ul><li style=\"text-align: justify\">Tidak terdapat sisa produk sesuai dipersyaratkan dari produk sebelumnya / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul><p style=\"text-align: justify\"><b>Catatan : </b></p><p style=\"text-align: justify\">1. Jika <b>digunakan : </b></p><ul><li style=\"text-align: justify\">pilih <b>Sesuai, Jika hasil memenuhi syarat </b></li><li style=\"text-align: justify\">pilih <b>Tidak Sesuai, jika hasil tidak memenuhi syarat </b></li></ul><p style=\"text-align: justify\">2. Jika <b>tidak digunakan</b>, maka pilih <b>NA</b>. </p>");
+            Scanner scanner = Scanner.InitScanner("<p style=\"text-align: justify\">Pastikan pada <br>mesin granulasi <br/>bagian \"<b>Inlet Product dan Pipa / Selang Suction</b><span >\" </span>(Jika Digunakan) : </p><ul>tape uli<li style=\"text-align: justify\">Tidak terdapat sisa produk sesuai dipersyaratkan dari produk sebelumnya / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul><p style=\"text-align: justify\"><b>Catatan : </b></p><p style=\"text-align: justify\">1. Jika <b>digunakan : </b></p><ul><li style=\"text-align: justify\">pilih <b>Sesuai, Jika hasil memenuhi syarat </b></li><li style=\"text-align: justify\">pilih <b>Tidak Sesuai, jika hasil tidak memenuhi syarat </b></li></ul><p style=\"text-align: justify\">2. Jika <b>tidak digunakan</b>, maka pilih <b>NA</b>. </p>");
 
             Token token;
 
@@ -117,36 +118,22 @@ namespace Core
             }
 
             // print serialized nodes
+            // hati hati bisa bikin lama waktu proses
             Console.WriteLine();
-            Console.WriteLine(JsonSerializer.Serialize(nodes));
+            //Console.WriteLine(JsonSerializer.Serialize(nodes));
 
             Console.WriteLine();
-            foreach(var _node in nodes)
+            //Console.WriteLine(NodeExtensions.InitiatePrintString(nodes[1]).StringBuilder);
+            foreach (var _node in nodes)
             {
-                StringBuilder localSb = new StringBuilder();
-                Console.WriteLine($"parent tag : {_node.Tag} | child node count: {_node.Childrens.Count}");
-                foreach (var child in _node.Childrens)
-                {
-                    Console.WriteLine($"child text : {child.Text}");
-                    localSb.Append(child.Text);
-                    foreach (var gchild in child.Childrens)
-                    {
-                        Console.WriteLine($"gchild text : {gchild.Text}");
-                        localSb.Append(gchild.Text);
-                        foreach(var ggchild in gchild.Childrens)
-                        {
-                            Console.WriteLine($"ggchild text : {ggchild.Text}");
-                            localSb.Append(ggchild.Text);
-                        }
-                    }
-                }
-                Console.WriteLine(localSb.ToString());
+                var print = NodeExtensions.InitiatePrintString(_node);
+                Console.WriteLine($"{print.StringBuilder}");
+                Console.WriteLine($"usedLine : {print.UsedLine}");
             }
             scanner.FreeScanner();
             watch.Stop();
             Console.WriteLine();
             Console.WriteLine($"elapsed {watch.ElapsedMilliseconds} ms");
-            Console.ReadLine();
         }
     }
 }

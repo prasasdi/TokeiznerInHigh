@@ -4,6 +4,9 @@ using Core.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Core
@@ -12,8 +15,13 @@ namespace Core
     {
         static void Main(string[] args)
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            /*
+             * Asumsi mereka ada char eof \0 kalau enggak ada tambahin sendiri
+             */
             /// Contoh full string html
-            string html = "<div><span>dengan catatan:<span> ini adalah double span</span></span><br/><ul><li>satu. dua dengan <i>italic <span>ini bisa jadi <b>bold</b></span></i></li><li>tiga dan empat dengan <b>bold</b></li></ul><p><div><span>maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>\0";
+            string html = "<div><span>dengan catatan:<span> ini adalah double span</span></span><br/><ul><li>satu. dua dengan <i>italic <span>ini bisa jadi <b>bold</b></span></i></li><li>tiga dan empat dengan <b>bold</b></li></ul><p><div><span>maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>";
             string html1 = "<div ><span >dengan catatan:<span > ini adalah double span</span></span><br /><ul ><li >satu. dua dengan <i >italic <span >ini bisa jadi <b >bold</b></span></i></li><li >tiga dan empat dengan <b >bold</b></li></ul><p ><div ><span >maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>\0";
             
             // Contoh dengan attr
@@ -24,6 +32,11 @@ namespace Core
             string foo1 = "<div>aaaaaa</div>\0";
 
             string pattern = @"<(/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|>([^<]*)<|(\s+)";
+
+            if (!html.Contains('\0'))
+            {
+                html += '\0';
+            }
             Scanner scanner = Scanner.InitScanner(html);
 
             Token token;
@@ -41,6 +54,9 @@ namespace Core
             }
 
             scanner.FreeScanner();
+            watch.Stop();
+            Console.WriteLine();
+            Console.WriteLine($"elapsed {watch.ElapsedMilliseconds} ms");
         }
     }
 }

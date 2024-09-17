@@ -10,7 +10,10 @@ namespace Core.Models
 {
     public class Scanner
     {
-        public string Source;
+        /// <summary>
+        /// Semisalnya ada yang mau dipotong didalamnya, tapi enggak mungkin lah ya
+        /// </summary>
+        public StringBuilder Source;
         /// <summary>
         /// Pointer awal karakter
         /// </summary>
@@ -36,7 +39,7 @@ namespace Core.Models
         {
             return new Scanner()
             {
-                Source = Source,
+                Source = new StringBuilder(Source),
                 Length = Source.Length,
                 Current = 0,
                 Start = 0,
@@ -46,7 +49,7 @@ namespace Core.Models
 
         public void FreeScanner()
         {
-            Source = string.Empty;
+            Source.Clear();
             Start = 0;
             Current = 0;
             Length = 0;

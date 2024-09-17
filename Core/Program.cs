@@ -20,23 +20,8 @@ namespace Core
         {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            /*
-             * Asumsi mereka ada char eof \0 kalau enggak ada tambahin sendiri
-             */
-            /// Contoh full string html
-            string html = "<div><span>dengan catatan:<span> ini adalah double span</span></span><br/><ul><li>satu. dua dengan <i>italic <span>ini bisa jadi <b>bold</b></span></i></li><li>tiga dan empat dengan <b>bold</b></li></ul><p><div><span>maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>";
-            string html1 = "<div ><span >dengan catatan:<span > ini adalah double span</span></span><br /><ul ><li >satu. dua dengan <i >italic <span >ini bisa jadi <b >bold</b></span></i></li><li >tiga dan empat dengan <b >bold</b></li></ul><p ><div ><span >maka dari itu</span> dengan ini saya sampaikan </div>kesimpulannya</p></div>\0";
-            
-            // Contoh dengan attr
-            string bar = "<div class=\"ini\" id=\"parent\" disabled>kan <div id=\"child\"> dimana</div></div>\0";
-            string bar1 = "<div class=\"ini\">kan <div > dimana</div ></div >\0";
 
-            string foo = "<div >kakaa</div>\0";
-            string foo1 = "<div id=\"div1\">aaaaaa</div><div id=\"div2\">aaaaaa</div>\0";
-
-            string pattern = @"<(/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|>([^<]*)<|(\s+)";
-
-            Scanner scanner = Scanner.InitScanner(html);
+            Scanner scanner = Scanner.InitScanner("<div></div>");
 
             Token token;
 
@@ -56,13 +41,13 @@ namespace Core
                 Console.WriteLine($"{token.Type} : {token.Value}");
 
                 switch (token.Type)
-                { 
+                {
                     case TokenTypeEnum.TOKEN_TAG_START:
                         // kalau tag kosong, asumsikan node adalah sebuah akar
                         if (node.Tag == null)
                         {
                             node = new NodeModel()
-                            { 
+                            {
                                 Tag = token.Value,
                             };
 
@@ -82,7 +67,13 @@ namespace Core
                         }
                         break;
                     case TokenTypeEnum.TOKEN_TEXT:
-                        node.Text = token.Value;
+                        //node.Text = token.Value;
+                        node.Childrens.Add(new NodeModel()
+                        {
+                            Tag = "#text",
+                            Text = token.Value,
+                            Parent = node
+                        });
                         break;
                     case TokenTypeEnum.TOKEN_ATTR_NAME:
                         nodeAttr = new AttrModel()
@@ -102,6 +93,7 @@ namespace Core
                         node.Childrens.Add(new NodeModel()
                         {
                             Tag = token.Value,
+                            Text = token.Value == "br" ? "\n" : string.Empty,
                             Parent = node
                         });
                         break;
@@ -124,20 +116,15 @@ namespace Core
                 }
             }
 
-            foreach(var _node in nodes)
-            {
-                Console.WriteLine($"child node count: {_node.Childrens.Count}");
-                foreach (var child in _node.Childrens)
-                {
-                    Console.WriteLine($"node child: {child.Tag} , parent node: {child.Parent.Tag}");
-                }
-            }
-            scanner.FreeScanner();
+            // print serialized nodes
             Console.WriteLine();
             Console.WriteLine(JsonSerializer.Serialize(nodes));
+
+            scanner.FreeScanner();
             watch.Stop();
             Console.WriteLine();
             Console.WriteLine($"elapsed {watch.ElapsedMilliseconds} ms");
+            Console.ReadLine();
         }
     }
 }

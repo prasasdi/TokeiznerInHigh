@@ -37,9 +37,14 @@ namespace Core.Models
 
         public static Scanner InitScanner(string Source)
         {
+            StringBuilder sb = new StringBuilder(Source);
+            if (!Source.Contains('\0'))
+            {
+                sb.Append('\0');
+            }
             return new Scanner()
             {
-                Source = new StringBuilder(Source),
+                Source = sb,
                 Length = Source.Length,
                 Current = 0,
                 Start = 0,

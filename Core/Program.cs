@@ -36,10 +36,6 @@ namespace Core
 
             string pattern = @"<(/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|>([^<]*)<|(\s+)";
 
-            if (!html.Contains('\0'))
-            {
-                html += '\0';
-            }
             Scanner scanner = Scanner.InitScanner(html);
 
             Token token;

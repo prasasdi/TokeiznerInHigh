@@ -8,7 +8,8 @@ Untuk memelajari bagaimana tokenizer dapat dilakukan dalam high-level proglang (
 4. Run
 
 ## Referensi
-[Making a Tokenizer for Html in C](https://medium.com/@shahidahmadkhan86/making-a-tokenizer-for-html-in-c-6e90a9672a89)
+[The Anatomy of Browser Rendering: How Web Pages Come to Life](https://medium.com/@regondaakhil/the-anatomy-of-browser-rendering-how-web-pages-come-to-life-6fa9e801a3f#:~:text=Parsing%20HTML,-Parsing%20is%20analyzing&text=The%20browser%20starts%20at%20the,Document%20Object%20Model%20(DOM).)
+[How web browsers work - parsing the HTML (part 3, with illustrations)](https://dev.to/arikaturika/how-web-browsers-work-parsing-the-html-part-3-with-illustrations-45fi)
 
 ### Referensi Debug
 Untuk memastikan fitur yang dikembangkan berjalan dengan baik

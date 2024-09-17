@@ -9,3 +9,7 @@ Untuk memelajari bagaimana tokenizer dapat dilakukan dalam high-level proglang (
 
 ## Referensi
 [Making a Tokenizer for Html in C](https://medium.com/@shahidahmadkhan86/making-a-tokenizer-for-html-in-c-6e90a9672a89)
+
+### Referensi Debug
+Untuk memastikan fitur yang dikembangkan berjalan dengan baik
+[DOM Tree Online](https://software.hixie.ch/utilities/js/live-dom-viewer/)

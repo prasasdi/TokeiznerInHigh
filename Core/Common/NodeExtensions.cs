@@ -10,7 +10,7 @@ namespace Core.Common
 {
     public static class NodeExtensions
     {
-        public static NodePrintModel InitiatePrintString(NodeModel node)
+        public static NodePrintModel GetInnerText(NodeModel node)
         {
             var npm = new NodePrintModel()
             {

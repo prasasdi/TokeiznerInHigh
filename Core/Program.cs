@@ -126,7 +126,7 @@ namespace Core
             //Console.WriteLine(NodeExtensions.InitiatePrintString(nodes[1]).StringBuilder);
             foreach (var _node in nodes)
             {
-                var print = NodeExtensions.InitiatePrintString(_node);
+                var print = NodeExtensions.GetInnerText(_node);
                 Console.WriteLine($"{print.StringBuilder}");
                 Console.WriteLine($"usedLine : {print.UsedLine}");
             }

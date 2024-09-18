@@ -11,13 +11,13 @@ namespace Core.Models.Prints
     public class NodePrintModel
     {
         [JsonPropertyName("sb")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public StringBuilder StringBuilder { get; set; }
         [JsonPropertyName("ul")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int UsedLine { get; set; }
         [JsonPropertyName("ctx")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public PrintCtxEnums Context { get; set; }
     }
 }

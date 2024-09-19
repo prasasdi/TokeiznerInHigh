@@ -68,6 +68,10 @@ namespace Core.Common
                         });
                         break;
                     case TokenTypeEnum.TOKEN_ATTR_NAME:
+                        if (token.Value == string.Empty)
+                        {
+                            break;
+                        }
                         nodeAttr = new AttrModel()
                         {
                             Name = token.Value,
@@ -78,6 +82,10 @@ namespace Core.Common
                         nodeAttr = new AttrModel();
                         break;
                     case TokenTypeEnum.TOKEN_ATTR_VALUE:
+                        if (token.Value == string.Empty)
+                        {
+                            break;
+                        }
                         node.Attributes[node.Attributes.Count - 1].Value = token.Value;
                         break;
                     case TokenTypeEnum.TOKEN_SELF_CLOSING:

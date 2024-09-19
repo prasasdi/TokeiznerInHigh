@@ -10,5 +10,9 @@ namespace Core.Helpers.Enums.Prints
     {
         PRINT_CTX_LIST,
         PRINT_CTX_DEFAULT,
+        PRINT_CTX_SELFCLOSING,
+        PRINT_CTX_INNERHTML,
+        PRINT_CTX_EOL,
+
     }
 }

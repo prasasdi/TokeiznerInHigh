@@ -5,11 +5,90 @@ using System;
 using System.Linq;
 using System.Text;
 using Core.Helpers.Enums.Prints;
+using Core.UseCases.Prints;
+using System.Collections.Generic;
 
 namespace Core.Common
 {
     public static class NodeExtensions
     {
+        public static NodePrintModel GetInnerHTML(NodeModel node)
+        {
+            StringBuilder sb = new StringBuilder();
+            // construct awal tag
+            sb.Append('<');
+            sb.Append(node.Tag);
+
+            // construct attributes
+            if (node.Attributes.Any())
+            {
+                sb.Append(' ');
+                foreach (var attr in node.Attributes)
+                { 
+                    sb.Append(attr.Name);
+                    sb.Append('=');
+                    sb.Append('"');
+                    sb.Append(attr.Value);
+                    sb.Append('"');
+
+                    // tambah ' ' kalau belum diakhir node
+                    if (!attr.Equals(node.Attributes.Last()))
+                    {
+                        sb.Append(' ');
+                    }
+                }
+            }
+
+            // close an opening tag
+            sb.Append('>');
+            
+            // construct member(s) of the tag
+            if (node.Childrens.Any())
+            {
+                foreach(var child in node.Childrens)
+                {
+                    if (child.Tag != "#text")
+                    {
+                        var c = GetInnerHTML(child);
+                        sb.Append(c.StringBuilder);
+                    }
+                    else
+                    {
+                        sb.Append(child.Text);
+                    }
+                }
+            }
+
+            // construct closing tag
+            // check apakah tag ini berupa self-closing tag
+            if (!SelfClosingTagEnums.Enums.Contains(node.Tag))
+            {
+                sb.Append('<');
+                sb.Append('/');
+                sb.Append(node.Tag);
+                sb.Append('>');
+            }
+            return new NodePrintModel()
+            {
+                StringBuilder = sb,
+                UsedLine = 1,
+                Context = PrintCtxEnums.PRINT_CTX_INNERHTML
+            };
+        }
+
+        public static List<NodePrintModel> GetChildrenInnerText(NodeModel node)
+        {
+            List<NodePrintModel> lnpm = new List<NodePrintModel>();
+            foreach(var childNode in node.Childrens)
+            {
+                if (!SelfClosingTagEnums.Enums.Contains(childNode.Tag))
+                {
+                    lnpm.Add(GetInnerText(childNode));
+                }
+            }
+            return lnpm;
+        }
+
         public static NodePrintModel GetInnerText(NodeModel node)
         {
             var npm = new NodePrintModel()
@@ -17,6 +96,7 @@ namespace Core.Common
                 UsedLine = 1,
                 Context = node.Tag == "ul" ? PrintCtxEnums.PRINT_CTX_LIST : PrintCtxEnums.PRINT_CTX_DEFAULT
             };
+            npm.Context = SelfClosingTagEnums.Enums.Contains(node.Tag) ? PrintCtxEnums.PRINT_CTX_SELFCLOSING : npm.Context;
             npm.StringBuilder = getInnerText(node, npm);
             return npm;
         }
@@ -53,6 +133,14 @@ namespace Core.Common
                             sb.Append(getInnerText(child, npm));
                             break;
                     }
+                }
+            }
+            else
+            {
+                // asumsi tag adalah #text
+                if (node.Tag == "#text")
+                {
+                    sb.Append(node.Text);
                 }
             }
             return sb;

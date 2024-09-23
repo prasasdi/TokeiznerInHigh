@@ -54,16 +54,23 @@ namespace Core.Common
 
             for (int current = 0; current < source.StringBuilder.Length && availableLines > 0; current++)
             {
-                sb.Append(source.StringBuilder[current]);
                 if (source.StringBuilder[current] == ' ')
                 {
                     if (current - start > 16)
                     {
                         availableLines--;
+                        // mundur satu char
+                        current--;
+                        while (source.StringBuilder[current] != ' ')
+                        {
+                            sb.Remove(sb.Length-1, 1);
+                            current--;
+                        }
+                        sb.Remove(sb.Length - 1, 1);
                         start = current;
-                        sb.Append(availableLines);
                     }
                 }
+                sb.Append(source.StringBuilder[current]);
             }
             return sb.ToString();
         }

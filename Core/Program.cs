@@ -42,11 +42,10 @@ namespace Core
             /*
              * To get and print innerText or innerContent of a node
              */
-            Console.WriteLine("get parent #text");
-            var pm = NodeExtensions.GetInnerText(nodes[1]);
-            Console.WriteLine(pm.StringBuilder);
-
-            Console.WriteLine();
+            //Console.WriteLine("get parent #text");
+            //var pm = NodeExtensions.GetInnerText(nodes[1]);
+            //Console.WriteLine(pm.StringBuilder);
+            //Console.WriteLine();
 
             //
             /*
@@ -55,7 +54,7 @@ namespace Core
             Console.WriteLine("get childs #text");
             var pmChilds = NodeExtensions.GetChildrenInnerText(nodes[1]);
             int ix = 1;
-            foreach(var pmChild in pmChilds)
+            foreach (var pmChild in pmChilds)
             {
                 Console.WriteLine($"{ix}. {pmChild.StringBuilder}");
                 Console.WriteLine($"usedLine: {pmChild.UsedLine}");
@@ -75,13 +74,21 @@ namespace Core
 
             //
             /*
+             * 
              */
-            foreach (var node in nodes)
-            {
-                var childInnerHtml = NodeExtensions.GetInnerHTML(node);
-                Console.WriteLine(childInnerHtml.StringBuilder);
-            }
-            Console.WriteLine();
+            //foreach (var node in nodes)
+            //{
+            //    var childInnerHtml = NodeExtensions.GetInnerHTML(node);
+            //    Console.WriteLine(childInnerHtml.StringBuilder);
+            //    Console.WriteLine();
+            //}
+            //Console.WriteLine();
+            #endregion
+
+            #region determiner
+
+            PrintExtensions.StartDetermine(nodes[1]);
+
             #endregion
 
             #endregion

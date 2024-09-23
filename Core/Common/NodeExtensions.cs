@@ -12,6 +12,11 @@ namespace Core.Common
 {
     public static class NodeExtensions
     {
+        /// <summary>
+        /// Get inner HTML
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public static NodePrintModel GetInnerHTML(NodeModel node)
         {
             StringBuilder sb = new StringBuilder();
@@ -76,6 +81,11 @@ namespace Core.Common
             };
         }
 
+        /// <summary>
+        /// Get innerText of each children
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns>Return list of children of a node print model</returns>
         public static List<NodePrintModel> GetChildrenInnerText(NodeModel node)
         {
             List<NodePrintModel> lnpm = new List<NodePrintModel>();
@@ -89,6 +99,11 @@ namespace Core.Common
             return lnpm;
         }
 
+        /// <summary>
+        /// Get innerText of an node
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns>Return a node print model</returns>
         public static NodePrintModel GetInnerText(NodeModel node)
         {
             var npm = new NodePrintModel()

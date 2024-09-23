@@ -30,7 +30,7 @@ namespace Core.Common
             {
                 token = scanToken(scanner);
                 // print token dimari
-                Console.WriteLine($"{token.Type} : {token.Value}");
+                //Console.WriteLine($"{token.Type} : {token.Value}");
 
                 switch (token.Type)
                 {

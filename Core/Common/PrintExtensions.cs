@@ -17,25 +17,42 @@ namespace Core.Common
         /// <param name="node"></param>
         /// <param name="availableLines"></param>
         /// <returns>String of HTML</returns>
-        public static string StartDetermine(NodeModel node, int availableLines = 5)
+        public static NodeModel StartDetermine(NodeModel node, ref int availableLines)
         {
             if (node.Childrens.Any())
             {
                 for (int current = 0; current < node.Childrens.Count && availableLines > 0; current++)
                 {
-                    Console.WriteLine($"current position {current}");
+                    Console.WriteLine($"Sisa baris {availableLines}");
                     if (SelfClosingTagEnums.Enums.Contains(node.Childrens[current].Tag))
                     {
                         availableLines--;
                     }
                     else
                     {
-                        var o = NodeExtensions.GetInnerText(node.Childrens[current]);
-                        Console.WriteLine(calculatePrintedString(o, ref availableLines));
+                        if (node.Childrens[current].Tag == "#text")
+                        {
+                            var innerTexts = NodeExtensions.GetInnerText(node.Childrens[current]);
+                            var output = calculatePrintedString(innerTexts, ref availableLines);
+
+                            Console.WriteLine(output.ToString());
+
+                            if (innerTexts.StringBuilder.Length != output.Length)
+                            {
+                                Console.WriteLine($"{innerTexts.StringBuilder.Length} || {output.Length}");
+                                node.Childrens[current].Text = output.ToString();
+                            }
+
+                            availableLines--;
+                        }
+                        else
+                        {
+                            StartDetermine(node.Childrens[current], ref availableLines);
+                        }
                     }
                 }
             }
-            return string.Empty;
+            return node;
         }
 
         /// <summary>
@@ -44,7 +61,7 @@ namespace Core.Common
         /// <param name="source">as StringBuilder</param>
         /// <param name="availableLines"></param>
         /// <returns>Inner string of html</returns>
-        static string calculatePrintedString(NodePrintModel source, ref int availableLines)
+        static StringBuilder calculatePrintedString(NodePrintModel source, ref int availableLines)
         {
             StringBuilder sb = new StringBuilder();
             // max karakter = 16
@@ -68,11 +85,12 @@ namespace Core.Common
                         }
                         sb.Remove(sb.Length - 1, 1);
                         start = current;
+                        //sb.Append('|');
                     }
                 }
                 sb.Append(source.StringBuilder[current]);
             }
-            return sb.ToString();
+            return sb;
         }
 
         static int getStringLength(StringBuilder str, int current)

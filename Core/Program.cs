@@ -87,8 +87,8 @@ namespace Core
 
             #region determiner
 
-            PrintExtensions.StartDetermine(nodes[1]);
-
+            int ava = 5;
+            var n = PrintExtensions.StartDetermine(nodes[1], ref ava);
             #endregion
 
             #endregion

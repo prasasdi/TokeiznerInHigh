@@ -19,14 +19,14 @@ namespace Core
     internal class Program
     {
         static void Main(string[] args)
-        {
+        {                
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
             List<NodeModel> nodes =
                 ScannerExtension.ScanTokens
                 (
-                    Scanner.InitScanner("<p style=\"text-align: justify\" >Pastikan pada <br>mesin granulasi <br/>bagian \"<b>Inlet Product dan Pipa / Selang Suction</b><span >\" </span>(Jika Digunakan) : </p><ul  ><hr>tape uli<li style=\"text-align: justify\">Tidak terdapat sisa produk <b>sesuai dipersyaratkan dari produk sebelumnya</b> / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul><p style=\"text-align: justify\"><b>Catatan : </b></p><p style=\"text-align: justify\">1. Jika <b>digunakan : </b></p><ul><li style=\"text-align: justify\">pilih <b>Sesuai, Jika hasil memenuhi syarat </b></li><li style=\"text-align: justify\">pilih <b>Tidak Sesuai, jika hasil tidak memenuhi syarat </b></li></ul><p style=\"text-align: justify\">2. Jika <b>tidak digunakan</b>, maka pilih <b>NA</b>. </p>")
+                    Scanner.InitScanner("<div>contoh dari satu tag div</div>")
                 );
 
             //foreach(var node in nodes) 
@@ -42,33 +42,35 @@ namespace Core
             /*
              * To get and print innerText or innerContent of a node
              */
-            //Console.WriteLine("get parent #text");
-            //var pm = NodeExtensions.GetInnerText(nodes[1]);
-            //Console.WriteLine(pm.StringBuilder);
-            //Console.WriteLine();
+            Console.WriteLine("get parent #text");
+            var pm = NodeExtensions.GetInnerText(nodes[0]);
+            Console.WriteLine(pm.StringBuilder);
+            Console.WriteLine();
 
             //
             /*
              * To get and print each innerContent or innerText of children node
              */
-            Console.WriteLine("get childs #text");
-            var pmChilds = NodeExtensions.GetChildrenInnerText(nodes[1]);
-            int ix = 1;
-            foreach (var pmChild in pmChilds)
-            {
-                Console.WriteLine($"{ix}. {pmChild.StringBuilder}");
-                Console.WriteLine($"usedLine: {pmChild.UsedLine}");
-                ix++;
-            }
-            Console.WriteLine();
+            //Console.WriteLine("get childs #text");
+            //var pmChilds = NodeExtensions.GetChildrenInnerText(nodes[1]);
+            //int ix = 1;
+            //foreach (var pmChild in pmChilds)
+            //{
+            //    Console.WriteLine($"{ix}. {pmChild.StringBuilder}");
+            //    Console.WriteLine($"usedLine: {pmChild.UsedLine}");
+            //    ix++;
+            //}
+            //Console.WriteLine();
             #endregion
 
             #region innerhtml
             //
             /*
              * To get and print innerHTML of an tag
+             * 
+             * Contohnya dibawah kalau ada lebih dari satu node, tinggal sesuaikan lagi
              */
-            var innerHtml = NodeExtensions.GetInnerHTML(nodes[1]);
+            var innerHtml = NodeExtensions.GetInnerHTML(nodes[0]);
             Console.WriteLine(innerHtml.StringBuilder);
             Console.WriteLine();
 
@@ -85,10 +87,12 @@ namespace Core
             //Console.WriteLine();
             #endregion
 
-            #region determiner
+            #region determiner(ondevelopment)
 
-            int ava = 5;
-            var n = PrintExtensions.StartDetermine(nodes[1], ref ava);
+            //int ava = 5;
+            //var n = PrintExtensions.StartDetermine(nodes[1], ref ava);
+            //var m = NodeExtensions.GetInnerHTML(n);
+            //Console.WriteLine(m.StringBuilder);
             #endregion
 
             #endregion

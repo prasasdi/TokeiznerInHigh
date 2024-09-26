@@ -47,7 +47,7 @@ namespace Core.Common
                         }
                         else
                         {
-                            StartDetermine(node.Childrens[current], ref availableLines);
+                            node.Childrens[current] = StartDetermine(node.Childrens[current], ref availableLines);
                         }
                     }
                 }
@@ -85,7 +85,7 @@ namespace Core.Common
                         }
                         sb.Remove(sb.Length - 1, 1);
                         start = current;
-                        //sb.Append('|');
+                        sb.Append('|');
                     }
                 }
                 sb.Append(source.StringBuilder[current]);

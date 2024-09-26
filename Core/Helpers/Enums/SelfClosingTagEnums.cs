@@ -26,5 +26,11 @@ namespace Core.Helpers.Enums
         "track",
         "wbr",
         };
+
+        public static string[] LineConsumer =
+        {
+            "br",
+            "hr"
+        };
     }
 }

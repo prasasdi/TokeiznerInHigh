@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,6 +14,197 @@ namespace Core.Common
 {
     public static class ScannerExtension
     {
+        public static List<NodeModel> ScanAndDetermineTokens(Scanner scanner, int maxCharPerLine, int availableLines)
+        {
+            Token token;
+
+            // container dari nodes
+            List<NodeModel> nodes = new List<NodeModel>();
+
+            // pointer ke node N
+            NodeModel node = new NodeModel();
+
+            // pointer attr untuk node N
+            AttrModel nodeAttr = new AttrModel();
+
+            // currentStrLeng; current available string, and string length
+            StringBuilder currentAvailableString = new StringBuilder();
+
+            while (true)
+            {
+                token = scanToken(scanner);
+                // print token dimari
+                //Console.WriteLine($"{token.Type} : {token.Value}");
+
+                switch (token.Type)
+                {
+                    case TokenTypeEnum.TOKEN_TAG_START:
+                        // kalau tag kosong, asumsikan node adalah sebuah akar
+                        if (node.Tag == null)
+                        {
+                            node = new NodeModel()
+                            {
+                                Tag = token.Value,
+                                Type = availableLines > 0 ? NodeTypeEnums.DT_CTX_READ : NodeTypeEnums.DT_CTX_HOLDPRINT
+                            };
+                        }
+                        else
+                        {
+                            // kalau tag adalah atau ul li, maka kosongkan current available string
+                            if (token.Value == "li" || token.Value == "ul")
+                            {
+                                currentAvailableString.Clear();
+                            }
+
+
+                            // buat tempNode untuk dijadikan sebagai anak node
+                            var tempNode = new NodeModel()
+                            {
+                                Tag = token.Value,
+                                Parent = node
+                            };
+                            node.Childrens.Add(tempNode);
+
+                            // arahkan 'pointer' ke anak
+                            node = tempNode;
+                        }
+                        break;
+                    case TokenTypeEnum.TOKEN_TEXT:
+                        //node.Text = token.Value;
+                        StringBuilder textBuilder = new StringBuilder(); // local string builder for tag #text
+                        int start = 0;
+                        int current = 0;
+                        for (; current < token.Value.Length && availableLines > 0; current++)
+                        {
+                            if (token.Value[current] == ' ')
+                            {
+                                // kalau panjang string yang ada melebihi dari batas karakter perbaris
+                                if (currentAvailableString.Length > maxCharPerLine)
+                                {
+                                    availableLines--; // dekremen sisa baris
+
+                                    /*
+                                    * asumsikan membuat baris baru
+                                    * artinya, current available string harus dibersihkan
+                                    */
+                                    currentAvailableString.Clear();
+
+                                    // karna pointer current ada di karakter ' ' maka dekremen pointer current
+                                    //current--;
+
+                                    while (current > 0)
+                                    {
+                                        if (current != 0)
+                                        {
+                                            current--;
+                                        }
+                                        textBuilder.Remove(textBuilder.Length - 1, 1);
+                                        if (token.Value[current] != ' ')
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    start = current;
+                                }
+                            }
+                            currentAvailableString.Append(token.Value[current]);
+                            textBuilder.Append(token.Value[current]);
+                        }
+                        if (availableLines > 0)
+                        {
+                            node.Childrens.Add(new NodeModel()
+                            {
+                                Tag = "#text",
+                                Text = textBuilder.ToString(),
+                                Type = NodeTypeEnums.DT_CTX_GOPRINT,
+                                Parent = node
+                            });
+                        }
+                        else
+                        {
+                            node.Childrens.Add(new NodeModel()
+                            {
+                                Tag = "#text",
+                                Text = textBuilder.ToString(),
+                                Type = NodeTypeEnums.DT_CTX_GOPRINT,
+                                Parent = node
+                            });
+                            // cek kalau value #text masih ada dengan asumsi pangjang kalimat textBuilder tidak sama dengan token.value
+                            if (textBuilder.Length != token.Value.Length)
+                            {
+                                node.Childrens.Add(new NodeModel()
+                                {
+                                    Tag = "#text",
+                                    Text = token.Value.Remove(start, current),
+                                    Type = NodeTypeEnums.DT_CTX_HOLDPRINT,
+                                    Parent = node
+                                });
+                            }
+                        }
+                        break;
+                    case TokenTypeEnum.TOKEN_ATTR_NAME:
+                        if (token.Value == string.Empty)
+                        {
+                            break;
+                        }
+                        nodeAttr = new AttrModel()
+                        {
+                            Name = token.Value,
+                            Node = node
+                        };
+                        node.Attributes.Add(nodeAttr);
+                        // clear node attribute untuk attr selanjutnya
+                        nodeAttr = new AttrModel();
+                        break;
+                    case TokenTypeEnum.TOKEN_ATTR_VALUE:
+                        if (token.Value == string.Empty)
+                        {
+                            break;
+                        }
+                        node.Attributes[node.Attributes.Count - 1].Value = token.Value;
+                        break;
+                    case TokenTypeEnum.TOKEN_SELF_CLOSING:
+                        // tambahkan sebagai child dari node
+                        if (SelfClosingTagEnums.LineConsumer.Contains(token.Value))
+                        {
+                            availableLines--;
+                        }
+                        node.Childrens.Add(new NodeModel()
+                        {
+                            Tag = token.Value,
+                            Text = token.Value == "br" ? "\n" : string.Empty,
+                            Type = availableLines > 0 ? NodeTypeEnums.DT_CTX_GOPRINT : NodeTypeEnums.DT_CTX_HOLDPRINT,
+                            Parent = node,
+                        });
+                        break;
+                    case TokenTypeEnum.TOKEN_TAG_END:
+                        if (node.Parent != null)
+                        {
+                            node = node.Parent;
+                        }
+                        else
+                        {
+                            nodes.Add(node);
+                            node = new NodeModel();
+                        }
+                        break;
+                }
+
+                if (token.Type == TokenTypeEnum.TOKEN_EOF)
+                {
+                    break;
+                }
+
+            }
+            scanner.FreeScanner();
+
+            return nodes;
+        }
+
         public static List<NodeModel> ScanTokens(Scanner scanner)
         {
             Token token;

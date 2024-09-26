@@ -17,9 +17,11 @@ namespace Core.Common
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public static NodePrintModel GetInnerHTML(NodeModel node)
+        public static NodePrintModel GetInnerHTML(NodeModel node, ParserEnum Mode)
         {
             StringBuilder sb = new StringBuilder();
+
+            
             // construct awal tag
             sb.Append('<');
             sb.Append(node.Tag);
@@ -52,15 +54,50 @@ namespace Core.Common
             {
                 foreach(var child in node.Childrens)
                 {
-                    if (child.Tag != "#text")
+                    switch(Mode)
                     {
-                        var c = GetInnerHTML(child);
-                        sb.Append(c.StringBuilder);
+                        case ParserEnum.PRINT_GO:
+                            if (child.Type != NodeTypeEnums.DT_CTX_HOLDPRINT || child.Type == NodeTypeEnums.DT_CTX_READ)
+                            {
+                                if (child.Tag != "#text")
+                                {
+                                    var c = GetInnerHTML(child, Mode);
+                                    sb.Append(c.StringBuilder);
+                                }
+                                else
+                                {
+                                    sb.Append(child.Text);
+                                }
+                            }
+                            break;
+                        case ParserEnum.PRINT_HOLD:
+                            if (child.Type == NodeTypeEnums.DT_CTX_HOLDPRINT || child.Type == NodeTypeEnums.DT_CTX_READ)
+                            {
+                                if (child.Tag != "#text")
+                                {
+                                    var c = GetInnerHTML(child, Mode);
+                                    sb.Append(c.StringBuilder);
+                                }
+                                else
+                                {
+                                    sb.Append(child.Text);
+                                }
+                            }
+                            break;
+                        case ParserEnum.DEFAULT:
+                            if (child.Tag != "#text")
+                            {
+                                var c = GetInnerHTML(child, Mode);
+                                sb.Append(c.StringBuilder);
+                            }
+                            else
+                            {
+                                sb.Append(child.Text);
+                            }
+                            break;
+
                     }
-                    else
-                    {
-                        sb.Append(child.Text);
-                    }
+                        
                 }
             }
 

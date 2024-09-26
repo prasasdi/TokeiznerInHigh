@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Helpers.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -24,5 +25,7 @@ namespace Core.Models.Nodes
         [JsonPropertyName("chlds")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<NodeModel> Childrens { get; set; } = new List<NodeModel>();
+
+        public NodeTypeEnums Type { get; set; }
     }
 }

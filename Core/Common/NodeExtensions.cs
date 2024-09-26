@@ -17,7 +17,7 @@ namespace Core.Common
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public static NodePrintModel GetInnerHTML(NodeModel node, ParserEnum Mode)
+        public static NodePrintModel GetInnerHTML(NodeModel node, ParserEnum Mode = ParserEnum.DEFAULT)
         {
             StringBuilder sb = new StringBuilder();
 

@@ -1,5 +1,4 @@
-﻿using Core.Helpers.Enums.Prints;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +15,5 @@ namespace Core.Models.Prints
         [JsonPropertyName("ul")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int UsedLine { get; set; }
-        [JsonPropertyName("ctx")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public PrintCtxEnums Context { get; set; }
     }
 }

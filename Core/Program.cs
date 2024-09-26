@@ -35,23 +35,11 @@ namespace Core
                 (
                     Scanner.InitScanner
                     (
-                        "<ul><hr>tape uli<li style=\"text-align: justify\">Tidak terdapat sisa produk <b>sesuai dipersyaratkan dari produk sebelumnya</b> / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul>"
+                        "<div>ini adalah tag simple. tambahkan attr, anggota dari tag ini untuk percobaan menarik lainnya!</div>"
                     )
                     , maxCharPerLine: 16
                     , availableLines: 5
                 );
-
-            /* contoh 
-             "<p style=\"text-align: justify\" >Pastikan pada <br>mesin granulasi <br/>bagian \"<b>Inlet Product dan Pipa / Selang Suction</b><span >\" </span>(Jika Digunakan) : </p><ul  ><hr>tape uli<li style=\"text-align: justify\">Tidak terdapat sisa produk <b>sesuai dipersyaratkan dari produk sebelumnya</b> / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul><p style=\"text-align: justify\"><b>Catatan : </b></p><p style=\"text-align: justify\">1. Jika <b>digunakan : </b></p><ul><li style=\"text-align: justify\">pilih <b>Sesuai, Jika hasil memenuhi syarat </b></li><li style=\"text-align: justify\">pilih <b>Tidak Sesuai, jika hasil tidak memenuhi syarat </b></li></ul><p style=\"text-align: justify\">2. Jika <b>tidak digunakan</b>, maka pilih <b>NA</b>. </p>"
-             */
-
-            /* contoh 
-            "<ul  ><hr>tape uli<li style=\"text-align: justify\">Tidak terdapat sisa produk <b>sesuai dipersyaratkan dari produk sebelumnya</b> / batch lainnya / produk lainnya </li><li style=\"text-align: justify\">Tidak terdapat debu dan kotoran serta dalam kondisi yang baik untuk digunakan </li><li style=\"text-align: justify\">Tidak terpasang / terhubung dengan benar dan kencang. </li></ul>"
-            */
-
-            /* contoh dengan li yang banyak
-             "<p>Lakukan setting jetprint dengan parameter:</p><p><b>A. Uhlmann UPS-1070 MTK</b></p><ul><li>Jenis Font JP A</li><li>Jenis Font JP B</li><li>Ukuran Font JP A</li><li>Ukuran Font JP B</li><li>Spacing distance JP A</li><li>Spacing distance JP B</li></ul><p><b>B. Uhlmann B 1880 MTK</b></p><ul><li>Jenis Font JP A</li><li>Jenis Font JP B</li><li>Ukuran Font JP A</li><li>Ukuran Font JP B</li><li>Spacing distance JP A</li><li>Spacing distance JP B</li></ul><p><b>C. IMA C80HS</b></p><ul><li>Height JP A</li><li>Height&ampnbsp;JP B</li><li>Width JP A</li><li>Width JP B</li><li>Character size JP A</li><li>Character size JP B</li><li>Jarak nozzle JP A</li><li>Jarak nozzle JP B</li></ul>"
-             */
 
             // print whole nodes
             foreach (var node in nodes)

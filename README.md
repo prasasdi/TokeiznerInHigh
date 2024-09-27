@@ -1,5 +1,5 @@
 # Latar Belakang
-Untuk memelajari bagaimana tokenizer dapat dilakukan dalam high-level proglang (misalnya dalam C# atau Java, bahkan JS)
+Untuk memelajari bagaimana ~tokenizer~ parser html dapat dilakukan dalam high-level proglang (misalnya dalam C# atau Java, bahkan JS)
 
 # Cara Pakai
 1. Clone repositoru
